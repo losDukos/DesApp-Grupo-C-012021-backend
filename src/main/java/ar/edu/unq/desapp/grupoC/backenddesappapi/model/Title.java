@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -14,7 +15,9 @@ public class Title {
     String title;
     String region;
     String language;
+    @ElementCollection(targetClass=String.class)
     List<String> types;
+    @ElementCollection(targetClass=String.class)
     List<String> attributes;
     Boolean isOriginalTitle;
     String tcons;
@@ -25,6 +28,7 @@ public class Title {
     Date startYear;
     Date endYear;
     Integer runtimeMinutes;
+    @ElementCollection(targetClass=String.class)
     List<String> genres;
 
 
