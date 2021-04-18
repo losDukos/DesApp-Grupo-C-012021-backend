@@ -3,11 +3,12 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Title {
+    // AKAs
     @Id
     String titleId;
     Integer ordering;
@@ -19,31 +20,52 @@ public class Title {
     @Convert(converter = StringListConverter.class)
     List<String> attributes;
     Boolean isOriginalTitle;
-    String tcons;
+
+    // Basics
     String titleType;
     String primaryTitle;
     String originalTitle;
     Boolean isAdult;
-    Date startYear;
-    Date endYear;
+    Integer startYear;
+    Integer endYear;
     Integer runtimeMinutes;
     @Convert(converter = StringListConverter.class)
     List<String> genres;
 
-
-
-    //Ratings
-    //String tconst;
-    String averageRating; //Revisar
+    // Ratings
+    Double averageRating;
     Integer numVotes;
 
+    // Reviews
     @OneToMany
     List<PublicReview> publicReviews;
     @OneToMany
     List<PremiumReview> premiumReviews;
 
-    public Title(){
+    public Title() {}
 
+    public Title(String titleId, Integer ordering, String title, String region, String language, List<String> types,
+                 List<String> attributes, Boolean isOriginalTitle, String titleType, String primaryTitle,
+                 String originalTitle, Boolean isAdult, Integer startYear, Integer endYear, Integer runtimeMinutes,
+                 List<String> genres, Double averageRating, Integer numVotes) {
+        this.titleId = titleId;
+        this.ordering = ordering;
+        this.title = title;
+        this.region = region;
+        this.language = language;
+        this.types = types;
+        this.attributes = attributes;
+        this.isOriginalTitle = isOriginalTitle;
+        this.titleType = titleType;
+        this.primaryTitle = primaryTitle;
+        this.originalTitle = originalTitle;
+        this.isAdult = isAdult;
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.runtimeMinutes = runtimeMinutes;
+        this.genres = genres;
+        this.averageRating = averageRating;
+        this.numVotes = numVotes;
     }
 
     public String getTitleId() {
@@ -118,19 +140,19 @@ public class Title {
         isAdult = adult;
     }
 
-    public Date getStartYear() {
+    public Integer getStartYear() {
         return startYear;
     }
 
-    public void setStartYear(Date startYear) {
+    public void setStartYear(Integer startYear) {
         this.startYear = startYear;
     }
 
-    public Date getEndYear() {
+    public Integer getEndYear() {
         return endYear;
     }
 
-    public void setEndYear(Date endYear) {
+    public void setEndYear(Integer endYear) {
         this.endYear = endYear;
     }
 
@@ -150,11 +172,11 @@ public class Title {
         this.genres = genres;
     }
 
-    public String getAverageRating() {
+    public Double getAverageRating() {
         return averageRating;
     }
 
-    public void setAverageRating(String averageRating) {
+    public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
 
@@ -184,14 +206,6 @@ public class Title {
 
     public void setOriginalTitle(Boolean originalTitle) {
         isOriginalTitle = originalTitle;
-    }
-
-    public String getTcons() {
-        return tcons;
-    }
-
-    public void setTcons(String tcons) {
-        this.tcons = tcons;
     }
 
     public String getTitleType() {
