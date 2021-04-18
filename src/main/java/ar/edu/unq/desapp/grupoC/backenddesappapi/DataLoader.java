@@ -64,7 +64,7 @@ public class DataLoader implements ApplicationRunner {
                 5, 10);
         titleRepository.save(springfield);
 
-        Title theSecretSnakeClub = new Episode("tt0701040", "tvEpisode", "The Secret Snake Club",
+        Title theSecretSnakeClub = new Episode("tt0593024", "tvEpisode", "The Secret Snake Club",
                 "The Secret Snake Club", false, 2005,
                 null, 21, Arrays.asList("Adventure", "Animation", "Comedy"), 7.9, 48,
                 "tt0292800", 4, 1);
