@@ -1,9 +1,8 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +14,9 @@ public class Title {
     String title;
     String region;
     String language;
-    @ElementCollection(targetClass=String.class)
+    @Convert(converter = StringListConverter.class)
     List<String> types;
-    @ElementCollection(targetClass=String.class)
+    @Convert(converter = StringListConverter.class)
     List<String> attributes;
     Boolean isOriginalTitle;
     String tcons;
@@ -28,7 +27,7 @@ public class Title {
     Date startYear;
     Date endYear;
     Integer runtimeMinutes;
-    @ElementCollection(targetClass=String.class)
+    @Convert(converter = StringListConverter.class)
     List<String> genres;
 
 
