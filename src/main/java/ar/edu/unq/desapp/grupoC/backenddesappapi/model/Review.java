@@ -1,11 +1,10 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Review {
 
     @Id
