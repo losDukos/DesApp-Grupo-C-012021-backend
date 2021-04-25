@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface ReviewRepository  extends CrudRepository<Review, Long> {
     List<Review> findAll();
+
     List<Review> findAllByReviewedTitleTitleIgnoreCaseContaining(String title);
+
+    List<Review> findAllByReviewedTitleTitleId(String id);
 }

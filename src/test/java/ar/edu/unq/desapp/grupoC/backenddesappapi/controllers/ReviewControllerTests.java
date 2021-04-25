@@ -75,4 +75,15 @@ public class ReviewControllerTests {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(review.getId()))));
     }
+
+    @Test
+    void a_review_is_retrieved_by_id() throws Exception {
+        review = ReviewBuilder.buildPublicReview(title);
+        reviewRepository.save(review);
+
+        mvc.perform(get("/review/id/" + title.getTitleId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(review.getId()))));
+    }
 }
