@@ -14,6 +14,10 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     public List<Review> getReviewsByTitle(String title) {
-        return reviewRepository.findAllByReviewedTitleTitle(title);
+        return reviewRepository.findAllByReviewedTitleTitleIgnoreCaseContaining(title);
+    }
+
+    public List<Review> getReviewsByTitleId(String id) {
+        return reviewRepository.findAllByReviewedTitleTitleId(id);
     }
 }

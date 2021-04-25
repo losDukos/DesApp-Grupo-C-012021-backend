@@ -23,4 +23,9 @@ public class ReviewController {
         return reviewService.getReviewsByTitle(title);
     }
 
+    @GetMapping("/id/{id}")
+    public @ResponseBody List<Review> getReviewsByTitleId(@PathVariable String id) {
+        return reviewService.getReviewsByTitleId(id);
+    }
+
 }
