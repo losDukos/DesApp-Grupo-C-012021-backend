@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -17,6 +19,12 @@ public abstract class Review {
     String origin;
     Integer userId;
     String language;
+
+    @ManyToOne
+    @JsonIgnoreProperties({"ordering", "title", "region", "language", "types", "attributes", "titleType",
+            "primaryTitle", "originalTitle", "startYear", "endYear", "runtimeMinutes", "genres",
+            "reviews", "adult"})
+    Title reviewedTitle;
 
     public Review() {}
 
@@ -82,5 +90,13 @@ public abstract class Review {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public Title getReviewedTitle() {
+        return reviewedTitle;
+    }
+
+    public void setReviewedTitle(Title reviewedTitle) {
+        this.reviewedTitle = reviewedTitle;
     }
 }

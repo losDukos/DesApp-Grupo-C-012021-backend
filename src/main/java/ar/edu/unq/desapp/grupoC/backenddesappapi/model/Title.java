@@ -197,6 +197,7 @@ public class Title {
         return !reviews.isEmpty();
     }
 
+    @Transient
     public Double getAverageRating() {
         OptionalDouble average = reviews.stream().mapToDouble(Review::getRating).average();
 
