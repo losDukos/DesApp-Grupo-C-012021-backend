@@ -16,8 +16,6 @@ public class User {
     String name;
     String password;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
 
     public Long getId() {
         return id;
@@ -40,7 +38,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = encoder.encode(password);
+        this.password = password;
     }
 
 
