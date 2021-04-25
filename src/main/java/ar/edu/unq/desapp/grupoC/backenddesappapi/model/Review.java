@@ -20,13 +20,24 @@ public abstract class Review {
     Integer userId;
     String language;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"ordering", "title", "region", "language", "types", "attributes", "titleType",
             "primaryTitle", "originalTitle", "startYear", "endYear", "runtimeMinutes", "genres",
             "reviews", "adult"})
     Title reviewedTitle;
 
     public Review() {}
+
+    public Review(String textSummary, String textExtended, Double rating,
+                  Date date, String origin, Integer userId, String language) {
+        this.textSummary = textSummary;
+        this.textExtended = textExtended;
+        this.rating = rating;
+        this.date = date;
+        this.origin = origin;
+        this.userId = userId;
+        this.language = language;
+    }
 
     public Long getId() {
         return id;

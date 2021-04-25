@@ -206,5 +206,11 @@ public class Title {
 
     public void addReview(Review review) {
         reviews.add(review);
+        review.setReviewedTitle(this);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+        review.setReviewedTitle(null);
     }
 }

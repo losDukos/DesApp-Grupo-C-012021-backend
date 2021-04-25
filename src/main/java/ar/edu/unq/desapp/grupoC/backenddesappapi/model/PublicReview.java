@@ -1,14 +1,24 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Entity
-public class PublicReview extends Review{
+public class PublicReview extends Review {
     Boolean spoilerAlert;
-    Integer userNick;
+    String userNick;
     String location;
 
     public PublicReview() {}
+
+    public PublicReview(String textSummary, String textExtended, Double rating,
+                  Date date, String origin, Integer userId, String language,
+                        Boolean spoilerAlert, String userNick, String location) {
+        super(textSummary, textExtended, rating, date, origin, userId, language);
+        this.spoilerAlert = spoilerAlert;
+        this.userNick = userNick;
+        this.location = location;
+    }
 
     public Boolean getSpoilerAlert() {
         return spoilerAlert;
@@ -18,11 +28,11 @@ public class PublicReview extends Review{
         this.spoilerAlert = spoilerAlert;
     }
 
-    public Integer getUserNick() {
+    public String getUserNick() {
         return userNick;
     }
 
-    public void setUserNick(Integer userNick) {
+    public void setUserNick(String userNick) {
         this.userNick = userNick;
     }
 
