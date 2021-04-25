@@ -3,7 +3,9 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -16,9 +18,9 @@ public class Title {
     String region;
     String language;
     @Convert(converter = StringListConverter.class)
-    List<String> types;
+    List<String> types = new ArrayList<>();
     @Convert(converter = StringListConverter.class)
-    List<String> attributes;
+    List<String> attributes = new ArrayList<>();
     Boolean isOriginalTitle;
 
     // Basics
@@ -30,24 +32,17 @@ public class Title {
     Integer endYear;
     Integer runtimeMinutes;
     @Convert(converter = StringListConverter.class)
-    List<String> genres;
+    List<String> genres = new ArrayList<>();
 
-    // Ratings
-    Double averageRating;
-    Integer numVotes;
-
-    // Reviews
     @OneToMany
-    List<PublicReview> publicReviews;
-    @OneToMany
-    List<PremiumReview> premiumReviews;
+    List<Review> reviews = new ArrayList<>();
 
     public Title() {}
 
     public Title(String titleId, Integer ordering, String title, String region, String language, List<String> types,
                  List<String> attributes, Boolean isOriginalTitle, String titleType, String primaryTitle,
                  String originalTitle, Boolean isAdult, Integer startYear, Integer endYear, Integer runtimeMinutes,
-                 List<String> genres, Double averageRating, Integer numVotes) {
+                 List<String> genres) {
         this.titleId = titleId;
         this.ordering = ordering;
         this.title = title;
@@ -64,8 +59,6 @@ public class Title {
         this.endYear = endYear;
         this.runtimeMinutes = runtimeMinutes;
         this.genres = genres;
-        this.averageRating = averageRating;
-        this.numVotes = numVotes;
     }
 
     public String getTitleId() {
@@ -172,36 +165,12 @@ public class Title {
         this.genres = genres;
     }
 
-    public Double getAverageRating() {
-        return averageRating;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setAverageRating(Double averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public Integer getNumVotes() {
-        return numVotes;
-    }
-
-    public void setNumVotes(Integer numVotes) {
-        this.numVotes = numVotes;
-    }
-
-    public List<PublicReview> getPublicReviews() {
-        return publicReviews;
-    }
-
-    public void setPublicReviews(List<PublicReview> publicReviews) {
-        this.publicReviews = publicReviews;
-    }
-
-    public List<PremiumReview> getPremiumReviews() {
-        return premiumReviews;
-    }
-
-    public void setPremiumReviews(List<PremiumReview> premiumReviews) {
-        this.premiumReviews = premiumReviews;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public void setOriginalTitle(Boolean originalTitle) {
@@ -222,5 +191,19 @@ public class Title {
 
     public void setPrimaryTitle(String primaryTitle) {
         this.primaryTitle = primaryTitle;
+    }
+
+    public boolean hasReviews() {
+        return !reviews.isEmpty();
+    }
+
+    public Double getAverageRating() {
+        OptionalDouble average = reviews.stream().mapToDouble(Review::getRating).average();
+
+        return average.isPresent() ? average.getAsDouble() : null;
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
     }
 }

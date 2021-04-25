@@ -12,16 +12,14 @@ public abstract class Review {
     Long id;
     String textSummary;
     String textExtended;
-    Integer rating;
-    Boolean spoilerAlert;
+    Double rating;
     Date date;
     String origin;
     Integer userId;
     String language;
 
-    public Review(){
+    public Review() {}
 
-    }
     public Long getId() {
         return id;
     }
@@ -46,20 +44,12 @@ public abstract class Review {
         this.textExtended = textExtended;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
-    }
-
-    public Boolean getSpoilerAlert() {
-        return spoilerAlert;
-    }
-
-    public void setSpoilerAlert(Boolean spoilerAlert) {
-        this.spoilerAlert = spoilerAlert;
     }
 
     public Date getDate() {

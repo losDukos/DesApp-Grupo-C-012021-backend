@@ -4,12 +4,20 @@ import javax.persistence.Entity;
 
 @Entity
 public class PublicReview extends Review{
+    Boolean spoilerAlert;
     Integer userNick;
     String location;
 
-    public PublicReview(){
+    public PublicReview() {}
 
+    public Boolean getSpoilerAlert() {
+        return spoilerAlert;
     }
+
+    public void setSpoilerAlert(Boolean spoilerAlert) {
+        this.spoilerAlert = spoilerAlert;
+    }
+
     public Integer getUserNick() {
         return userNick;
     }

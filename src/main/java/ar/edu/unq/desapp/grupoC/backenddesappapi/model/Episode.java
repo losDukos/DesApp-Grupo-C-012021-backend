@@ -12,8 +12,8 @@ public class Episode extends Title {
     public Episode() {}
 
     public Episode(String titleId, String titleType, String primaryTitle, String originalTitle, Boolean isAdult,
-                 Integer startYear, Integer endYear, Integer runtimeMinutes, List<String> genres,
-                 Double averageRating, Integer numVotes, String parentTconst, Integer seasonNumber, Integer episodeNumber) {
+                 Integer startYear, Integer endYear, Integer runtimeMinutes, List<String> genres, String parentTconst,
+                   Integer seasonNumber, Integer episodeNumber) {
         this.titleId = titleId;
         this.titleType = titleType;
         this.primaryTitle = primaryTitle;
@@ -23,8 +23,6 @@ public class Episode extends Title {
         this.endYear = endYear;
         this.runtimeMinutes = runtimeMinutes;
         this.genres = genres;
-        this.averageRating = averageRating;
-        this.numVotes = numVotes;
         this.parentTitleId = parentTconst;
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
