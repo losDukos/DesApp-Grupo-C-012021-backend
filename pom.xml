@@ -11,7 +11,6 @@
 	<groupId>ar.edu.unq.desapp.grupoC</groupId>
 	<artifactId>backend-desapp-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>backend-desapp-api</name>
 	<description>Proyecto backend grupo-C</description>
 	<properties>
