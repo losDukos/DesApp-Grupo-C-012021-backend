@@ -13,6 +13,7 @@ public class User {
     String name;
     String password;
 
+    public User() {}
 
     public Long getId() {
         return id;

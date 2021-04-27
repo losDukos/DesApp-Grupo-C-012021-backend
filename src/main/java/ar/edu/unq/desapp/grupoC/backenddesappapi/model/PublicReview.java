@@ -6,17 +6,15 @@ import java.util.Date;
 @Entity
 public class PublicReview extends Review {
     Boolean spoilerAlert;
-    String userNick;
     String location;
 
     public PublicReview() {}
 
     public PublicReview(String textSummary, String textExtended, Double rating,
-                  Date date, String origin, Integer userId, String language,
-                        Boolean spoilerAlert, String userNick, String location) {
-        super(textSummary, textExtended, rating, date, origin, userId, language);
+                  Date date, String origin, String language,
+                        Boolean spoilerAlert, String location) {
+        super(textSummary, textExtended, rating, date, origin, language);
         this.spoilerAlert = spoilerAlert;
-        this.userNick = userNick;
         this.location = location;
     }
 
@@ -26,14 +24,6 @@ public class PublicReview extends Review {
 
     public void setSpoilerAlert(Boolean spoilerAlert) {
         this.spoilerAlert = spoilerAlert;
-    }
-
-    public String getUserNick() {
-        return userNick;
-    }
-
-    public void setUserNick(String userNick) {
-        this.userNick = userNick;
     }
 
     public String getLocation() {

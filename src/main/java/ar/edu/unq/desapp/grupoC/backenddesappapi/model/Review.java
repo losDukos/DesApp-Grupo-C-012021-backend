@@ -3,7 +3,10 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -17,7 +20,6 @@ public abstract class Review {
     Double rating;
     Date date;
     String origin;
-    Integer userId;
     String language;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,16 +28,21 @@ public abstract class Review {
             "reviews", "adult"})
     Title reviewedTitle;
 
+    @OneToOne
+    User user;
+
+    @OneToMany
+    List<Appraisal> appraisals = new ArrayList<>();
+
     public Review() {}
 
     public Review(String textSummary, String textExtended, Double rating,
-                  Date date, String origin, Integer userId, String language) {
+                  Date date, String origin, String language) {
         this.textSummary = textSummary;
         this.textExtended = textExtended;
         this.rating = rating;
         this.date = date;
         this.origin = origin;
-        this.userId = userId;
         this.language = language;
     }
 
@@ -87,14 +94,6 @@ public abstract class Review {
         this.origin = origin;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -109,5 +108,55 @@ public abstract class Review {
 
     public void setReviewedTitle(Title reviewedTitle) {
         this.reviewedTitle = reviewedTitle;
+    }
+
+    public List<Appraisal> getAppraisals() {
+        return appraisals;
+    }
+
+    public void setAppraisals(List<Appraisal> appraisals) {
+        this.appraisals = appraisals;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean hasAppraisals() {
+        return !appraisals.isEmpty();
+    }
+
+    public void appraisePositivelyBy(User user) {
+        setAppraisalBy(user, true);
+    }
+
+    public void appraiseNegativelyBy(User user) {
+        setAppraisalBy(user, false);
+    }
+
+    public Optional<Appraisal> getUserAppraisal(User user) {
+        return appraisals.stream().filter(appraisal -> appraisal.getUser().getId().equals(user.getId())).findFirst();
+    }
+
+    private void setAppraisalBy(User user, Boolean isPositive) {
+        Optional<Appraisal> appraisal = getUserAppraisal(user);
+        if (appraisal.isEmpty()) {
+            appraisals.add(new Appraisal(user, isPositive));
+        } else {
+            appraisal.get().setPositive(isPositive);
+        }
+    }
+
+    @Transient
+    public Long getLikes() {
+        return appraisals.stream().filter(Appraisal::isPositive).count();
+    }
+
+    public Long getDislikes() {
+        return appraisals.stream().filter(appraisal -> !appraisal.isPositive()).count();
     }
 }
