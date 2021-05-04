@@ -22,13 +22,14 @@ public abstract class Review {
     String origin;
     String language;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"ordering", "title", "region", "language", "types", "attributes", "titleType",
+    @ManyToOne
+    @JsonIgnoreProperties({"ordering", "region", "language", "types", "attributes", "isOriginalTitle", "titleType",
             "primaryTitle", "originalTitle", "startYear", "endYear", "runtimeMinutes", "genres",
             "reviews", "adult"})
     Title reviewedTitle;
 
     @OneToOne
+    @JsonIgnoreProperties({"password"})
     User user;
 
     @OneToMany(cascade=CascadeType.ALL)
