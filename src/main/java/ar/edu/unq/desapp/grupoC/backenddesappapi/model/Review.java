@@ -31,7 +31,7 @@ public abstract class Review {
     @OneToOne
     User user;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     List<Appraisal> appraisals = new ArrayList<>();
 
     public Review() {}
@@ -142,7 +142,7 @@ public abstract class Review {
         return appraisals.stream().filter(appraisal -> appraisal.getUser().getId().equals(user.getId())).findFirst();
     }
 
-    public void setAppraisalBy(User user, Boolean isPositive) {
+    private void setAppraisalBy(User user, Boolean isPositive) {
         Optional<Appraisal> appraisal = getUserAppraisal(user);
         if (appraisal.isEmpty()) {
             appraisals.add(new Appraisal(user, isPositive));
@@ -156,6 +156,7 @@ public abstract class Review {
         return appraisals.stream().filter(Appraisal::isPositive).count();
     }
 
+    @Transient
     public Long getDislikes() {
         return appraisals.stream().filter(appraisal -> !appraisal.isPositive()).count();
     }

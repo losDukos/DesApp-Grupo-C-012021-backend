@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewService {
@@ -23,4 +22,12 @@ public class ReviewService {
     }
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
+
+    public Review addReview(Review review) {
+        return reviewRepository.save(review);
+    }
+
+    public Review updateReview(Review review) {
+        return reviewRepository.save(review);
+    }
 }

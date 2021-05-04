@@ -1,12 +1,14 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Appraisal {
     @Id
+    @GeneratedValue
     private Long id;
     private Boolean isPositive;
 
