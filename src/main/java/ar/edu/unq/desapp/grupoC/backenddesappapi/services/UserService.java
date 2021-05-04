@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,5 +29,8 @@ public class UserService implements UserDetailsService {
         rols.add(new SimpleGrantedAuthority("ADMIN"));
 
         return new User(us.getName(), us.getPassword(), rols);
+    }
+    public ar.edu.unq.desapp.grupoC.backenddesappapi.model.User userById(Long id){
+        return repo.findById(id).get();
     }
 }

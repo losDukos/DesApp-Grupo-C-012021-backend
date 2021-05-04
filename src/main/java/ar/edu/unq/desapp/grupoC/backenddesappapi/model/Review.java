@@ -142,7 +142,7 @@ public abstract class Review {
         return appraisals.stream().filter(appraisal -> appraisal.getUser().getId().equals(user.getId())).findFirst();
     }
 
-    private void setAppraisalBy(User user, Boolean isPositive) {
+    public void setAppraisalBy(User user, Boolean isPositive) {
         Optional<Appraisal> appraisal = getUserAppraisal(user);
         if (appraisal.isEmpty()) {
             appraisals.add(new Appraisal(user, isPositive));
