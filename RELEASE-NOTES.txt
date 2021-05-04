@@ -1,0 +1,18 @@
+---------------------------------------------------------------------
+TAG 1
+---------------------------------------------------------------------
+NEW FEATURES:
+Creación de repositorios GitHub
+Configuración en Travis
+Build corriendo y SUCCESS
+Proyecto configurado en Codacy
+Deploy automático utlizando HEROKU
+Agregar una reseña
+Valorar una reseña
+Buscar reseñas de una pelicula
+
+NOTES:
+Al buscar una reseña no se pueden aplicar filtros
+
+KNOWN ISSUES:
+Solo se pueden crear Reviews públicas
