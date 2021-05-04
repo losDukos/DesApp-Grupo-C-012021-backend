@@ -2,7 +2,9 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Episode;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,9 +20,24 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private TitleRepository titleRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void run(ApplicationArguments args) {
+        seedUsersTable();
         seedTitlesTable();
+    }
+
+    private void seedUsersTable() {
+        List<User> users = userRepository.findAll();
+
+        if (!users.isEmpty()) {
+            return;
+        }
+
+        User user = new User("Test User", "password");
+        userRepository.save(user);
     }
 
     private void seedTitlesTable() {
