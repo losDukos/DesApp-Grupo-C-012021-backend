@@ -1,24 +1,25 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controllers;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.DataLoader;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.ReviewBuilder;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 
-
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,9 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 public class ReviewControllerTests {
-    @MockBean
-    private DataLoader dataLoader;
-
     @Autowired
     private MockMvc mvc;
 
@@ -38,13 +36,18 @@ public class ReviewControllerTests {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    private Title title;
+    @Autowired
+    private UserRepository userRepository;
 
+    private Title title;
     private Review review;
 
     @BeforeEach
-    void setUp() {
-        title = titleRepository.findById("tt0129167").get();
+    void setup() {
+        Title transientTitle = new Title();
+        transientTitle.setTitleId("a title ID");
+        transientTitle.setTitle("Title");
+        title = titleRepository.save(transientTitle);
     }
 
     @Test
@@ -85,5 +88,68 @@ public class ReviewControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(review.getId()))));
+    }
+
+    @Test
+    void a_public_review_is_created() throws Exception {
+        String json = "{\"reviewedTitle\": {\"titleId\": \"" + title.getTitleId() + "\"}}";
+        mvc.perform(post("/review").contentType(MediaType.APPLICATION_JSON).content(json))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.reviewedTitle.titleId", equalTo(title.getTitleId())))
+        .andExpect(jsonPath("$.premium", is(false)));
+    }
+
+    @Test
+    void a_premium_review_is_created() throws Exception {
+        String json = "{\"premium\": true, \"reviewedTitle\": {\"titleId\": \"" + title.getTitleId() + "\"}}";
+        mvc.perform(post("/review").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reviewedTitle.titleId", equalTo(title.getTitleId())))
+                .andExpect(jsonPath("$.premium", is(true)));
+    }
+
+    @Test
+    void a_review_is_rated_possitively() throws Exception {
+        review = ReviewBuilder.buildPublicReview(title);
+        Review savedReview = reviewRepository.save(review);
+        User savedUser = userRepository.save(new User());
+
+        String json = "{\"positive\": true, \"userId\": " + savedUser.getId() + "}";
+        mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(json))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.user.id", equalTo(savedUser.getId().intValue())))
+        .andExpect(jsonPath("$.positive", is(true)));
+    }
+
+    @Test
+    void a_review_is_rated_negatively() throws Exception {
+        review = ReviewBuilder.buildPublicReview(title);
+        Review savedReview = reviewRepository.save(review);
+        User savedUser = userRepository.save(new User());
+
+        String json = "{\"positive\": false, \"userId\": " + savedUser.getId() + "}";
+        mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user.id", equalTo(savedUser.getId().intValue())))
+                .andExpect(jsonPath("$.positive", is(false)));
+    }
+
+    @Test
+    void a_review_is_edited_and_the_amount_of_rates_stays_the_same() throws Exception {
+        review = ReviewBuilder.buildPublicReview(title);
+        Review savedReview = reviewRepository.save(review);
+        User savedUser = userRepository.save(new User());
+
+        String negativeJson = "{\"positive\": false, \"userId\": " + savedUser.getId() + "}";
+        mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(negativeJson));
+
+        String positiveJson = "{\"positive\": true, \"userId\": " + savedUser.getId() + "}";
+        mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(positiveJson));
+
+        Review retrievedReview = reviewRepository.findById(savedReview.getId()).get();
+
+        assertEquals(retrievedReview.getLikes(), 1);
+        assertEquals(retrievedReview.getDislikes(), 0);
+        assertEquals(retrievedReview.getAppraisals().size(), 1);
     }
 }

@@ -22,7 +22,7 @@ public class Review {
     String language;
     Boolean spoilerAlert;
     String location;
-    Boolean isPremium;
+    Boolean isPremium = false;
 
     @ManyToOne
     @JsonIgnoreProperties({"ordering", "region", "language", "types", "attributes", "isOriginalTitle", "titleType",
