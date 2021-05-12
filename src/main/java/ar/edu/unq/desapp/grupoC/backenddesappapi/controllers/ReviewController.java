@@ -29,7 +29,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public Review addReview(@RequestBody PublicReview review) {
+    public Review addReview(@RequestBody Review review) {
         return reviewService.addReview(review);
     }
 

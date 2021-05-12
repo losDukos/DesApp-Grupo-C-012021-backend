@@ -25,22 +25,15 @@ public class TitleTests {
     }
 
     @Test
-    void a_title_adds_a_public_review() {
-        title.addReview(new PublicReview());
-
-        assertTrue(title.hasReviews());
-    }
-
-    @Test
-    void a_title_adds_a_premium_review() {
-        title.addReview(new PremiumReview());
+    void a_title_adds_a_review() {
+        title.addReview(new Review());
 
         assertTrue(title.hasReviews());
     }
 
     @Test
     void a_title_with_one_review_has_an_average_rating_equal_to_that_reviews_rating() {
-        Review review = new PublicReview();
+        Review review = new Review();
         review.setRating(5.0);
         title.addReview(review);
 
@@ -49,9 +42,9 @@ public class TitleTests {
 
     @Test
     void a_title_with_several_reviews_has_an_average_rating_equal_to_those_reviews_average_rating() {
-        Review firstReview = new PublicReview();
+        Review firstReview = new Review();
         firstReview.setRating(5.0);
-        Review secondReview = new PublicReview();
+        Review secondReview = new Review();
         secondReview.setRating(1.0);
 
         title.addReview(firstReview);

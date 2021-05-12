@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Review {
+public class Review {
 
     @Id
     @GeneratedValue
@@ -21,6 +20,9 @@ public abstract class Review {
     Date date;
     String origin;
     String language;
+    Boolean spoilerAlert;
+    String location;
+    Boolean isPremium;
 
     @ManyToOne
     @JsonIgnoreProperties({"ordering", "region", "language", "types", "attributes", "isOriginalTitle", "titleType",
@@ -38,13 +40,16 @@ public abstract class Review {
     public Review() {}
 
     public Review(String textSummary, String textExtended, Double rating,
-                  Date date, String origin, String language) {
+                  Date date, String origin, String language, Boolean spoilerAlert, String location, Boolean isPremium) {
         this.textSummary = textSummary;
         this.textExtended = textExtended;
         this.rating = rating;
         this.date = date;
         this.origin = origin;
         this.language = language;
+        this.spoilerAlert = spoilerAlert;
+        this.location = location;
+        this.isPremium = isPremium;
     }
 
     public Long getId() {
@@ -101,6 +106,30 @@ public abstract class Review {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public Boolean getSpoilerAlert() {
+        return spoilerAlert;
+    }
+
+    public void setSpoilerAlert(Boolean spoilerAlert) {
+        this.spoilerAlert = spoilerAlert;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Boolean getPremium() {
+        return isPremium;
+    }
+
+    public void setPremium(Boolean premium) {
+        isPremium = premium;
     }
 
     public Title getReviewedTitle() {
