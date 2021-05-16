@@ -183,7 +183,7 @@ public class ReviewControllerTests {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-        // Sort review
+        // Sort Reviews
 
     @Test
     void reviews_are_sorted_by_rating_asc() throws Exception {
@@ -243,6 +243,31 @@ public class ReviewControllerTests {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(firstReview.getId()))))
                 .andExpect(jsonPath("$[1].id", comparesEqualTo(Math.toIntExact(lastReview.getId()))));
+    }
+
+        // Paginate Reviews
+
+    @Test
+    void reviews_are_paginated() throws Exception {
+        Review firstReview = new ReviewBuilder().build(title);
+        reviewRepository.save(firstReview);
+
+        Review lastReview =  new ReviewBuilder().build(title);
+        reviewRepository.save(lastReview);
+
+        mvc.perform(get("/review/id/" + title.getTitleId() + "?page=0&size=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(firstReview.getId()))));
+
+        mvc.perform(get("/review/id/" + title.getTitleId() + "?page=1&size=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", comparesEqualTo(Math.toIntExact(lastReview.getId()))));
+
+        mvc.perform(get("/review/id/" + title.getTitleId() + "?page=0&size=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     // POST: Add Review
