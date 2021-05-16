@@ -11,6 +11,8 @@ public class ReviewBuilder {
     private String location = "test location";
     private String language = "english";
     private Boolean isPremium = false;
+    private Double rating = 5.0;
+    private Date date = new Date();
 
     public ReviewBuilder withSpoilerAlert(Boolean spoilerAlert) {
         this.spoilerAlert = spoilerAlert;
@@ -32,15 +34,25 @@ public class ReviewBuilder {
         return this;
     }
 
+    public ReviewBuilder withRating(Double rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public ReviewBuilder withDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
     public Review build(Title title) {
-        Review review = new Review("test summary", "extended test summary", 5.0,
-                new Date(), "origin", language, spoilerAlert, location, isPremium);
+        Review review = new Review("test summary", "extended test summary", rating,
+                date, "origin", language, spoilerAlert, location, isPremium);
         title.addReview(review);
         return review;
     }
 
     public Review build() {
-        return new Review("test summary", "extended test summary", 5.0,
-                new Date(), "origin", language, spoilerAlert, location, isPremium);
+        return new Review("test summary", "extended test summary", rating,
+                date, "origin", language, spoilerAlert, location, isPremium);
     }
 }

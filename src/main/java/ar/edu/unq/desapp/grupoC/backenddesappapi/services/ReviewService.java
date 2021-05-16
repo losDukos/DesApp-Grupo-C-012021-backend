@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class ReviewService {
         return reviewRepository.findAllByReviewedTitleTitleIgnoreCaseContaining(title);
     }
 
-    public List<Review> getReviewsByTitleId(Specification<Review> specs) {
-        return reviewRepository.findAll(specs);
+    public List<Review> getReviewsByTitleId(Specification<Review> specs, Pageable pageable) {
+        return reviewRepository.findAll(specs, pageable).getContent();
     }
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
