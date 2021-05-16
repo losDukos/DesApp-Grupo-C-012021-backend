@@ -12,14 +12,14 @@ public class ReviewTest {
 
     @Test
     void a_newly_created_review_has_no_appraisals() {
-        Review review = ReviewBuilder.buildUnassociatedReview();
+        Review review = new ReviewBuilder().build();
 
         assertFalse(review.hasAppraisals());
     }
 
     @Test
     void a_newly_created_review_is_positively_appraised_and_its_likes_amount_to_one() {
-        Review review = ReviewBuilder.buildUnassociatedReview();
+        Review review = new ReviewBuilder().build();
         User user = UserBuilder.buildUser();
         review.appraisePositivelyBy(user);
 
@@ -29,7 +29,7 @@ public class ReviewTest {
 
     @Test
     void a_newly_created_review_is_negatively_appraised_and_its_dislikes_amount_to_one() {
-        Review review = ReviewBuilder.buildUnassociatedReview();
+        Review review = new ReviewBuilder().build();
         User user = UserBuilder.buildUser();
         review.appraiseNegativelyBy(user);
 
@@ -39,7 +39,7 @@ public class ReviewTest {
 
     @Test
     void a_user_changes_their_dislike_to_like_and_the_amount_of_likes_turns_to_one() {
-        Review review = ReviewBuilder.buildUnassociatedReview();
+        Review review = new ReviewBuilder().build();
         User user = UserBuilder.buildUser();
         review.appraiseNegativelyBy(user);
         review.appraisePositivelyBy(user);
