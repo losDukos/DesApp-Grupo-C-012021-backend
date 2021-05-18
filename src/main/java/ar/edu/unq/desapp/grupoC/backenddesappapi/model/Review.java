@@ -16,6 +16,7 @@ public class Review {
     Long id;
     String textSummary;
     String textExtended;
+    // TODO: Make sure this cannot be null
     Double rating;
     Date date;
     String origin;

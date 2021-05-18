@@ -39,6 +39,11 @@ public class Title {
 
     public Title() {}
 
+    public Title(String titleId, String title) {
+        this.titleId = titleId;
+        this.title = title;
+    }
+
     public Title(String titleId, Integer ordering, String title, String region, String language, List<String> types,
                  List<String> attributes, Boolean isOriginalTitle, String titleType, String primaryTitle,
                  String originalTitle, Boolean isAdult, Integer startYear, Integer endYear, Integer runtimeMinutes,
