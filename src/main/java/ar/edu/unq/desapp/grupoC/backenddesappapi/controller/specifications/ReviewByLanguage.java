@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC.backenddesappapi.controllers.specifications;
+package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import org.springframework.data.jpa.domain.Specification;
@@ -8,16 +8,19 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class ReviewByTitleId implements Specification<Review> {
+public class ReviewByLanguage implements Specification<Review> {
 
-    private final String titleId;
+    private final String language;
 
-    public ReviewByTitleId(String titleId) {
-        this.titleId = titleId;
+    public ReviewByLanguage(String language) {
+        this.language = language;
     }
 
     @Override
     public Predicate toPredicate(Root<Review> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.equal(root.get("reviewedTitle").get("titleId"), titleId);
+        if (language == null) {
+            return criteriaBuilder.conjunction();
+        }
+        return criteriaBuilder.equal(root.get("language"), language);
     }
 }

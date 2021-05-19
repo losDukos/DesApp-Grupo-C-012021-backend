@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC.backenddesappapi.controllers.specifications;
+package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import org.springframework.data.jpa.domain.Specification;

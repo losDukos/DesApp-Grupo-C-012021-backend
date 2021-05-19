@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC.backenddesappapi.controllers.specifications;
+package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import org.springframework.data.jpa.domain.Specification;
@@ -8,19 +8,16 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class ReviewByLocation implements Specification<Review> {
+public class ReviewByTitleId implements Specification<Review> {
 
-    private final String location;
+    private final String titleId;
 
-    public ReviewByLocation(String location) {
-        this.location = location;
+    public ReviewByTitleId(String titleId) {
+        this.titleId = titleId;
     }
 
     @Override
     public Predicate toPredicate(Root<Review> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        if (location == null) {
-            return criteriaBuilder.conjunction();
-        }
-        return criteriaBuilder.equal(root.get("location"), location);
+        return criteriaBuilder.equal(root.get("reviewedTitle").get("titleId"), titleId);
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,8 +34,9 @@ public class Title {
     Integer runtimeMinutes;
     @Convert(converter = StringListConverter.class)
     List<String> genres = new ArrayList<>();
+    Double averageRating;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     List<Review> reviews = new ArrayList<>();
 
     public Title() {}
@@ -202,20 +204,27 @@ public class Title {
         return !reviews.isEmpty();
     }
 
-    @Transient
     public Double getAverageRating() {
-        OptionalDouble average = reviews.stream().mapToDouble(Review::getRating).average();
+        return averageRating;
+    }
 
-        return average.isPresent() ? average.getAsDouble() : null;
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 
     public void addReview(Review review) {
         reviews.add(review);
+        calculateAverageRating();
         review.setReviewedTitle(this);
+    }
+
+    public void calculateAverageRating() {
+        setAverageRating(reviews.stream().mapToDouble(Review::getRating).average().getAsDouble());
     }
 
     public void removeReview(Review review) {
         reviews.remove(review);
+        calculateAverageRating();
         review.setReviewedTitle(null);
     }
 }

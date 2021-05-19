@@ -1,0 +1,78 @@
+package ar.edu.unq.desapp.grupoC.backenddesappapi.integration;
+
+import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.TitleBuilder;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+
+import javax.transaction.Transactional;
+
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+@ActiveProfiles("test")
+public class TitleIntegrationTests {
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    private TitleRepository titleRepository;
+
+    @Test
+    void no_titles_are_brought_if_there_arent_any() throws Exception {
+        mvc.perform(get("/title"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void a_title_is_brought() throws Exception {
+        titleRepository.save(new TitleBuilder().build());
+
+        mvc.perform(get("/title"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    void the_first_page_of_titles_is_brought_with_size_1() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().build());
+        titleRepository.save(new TitleBuilder().build());
+
+        mvc.perform(get("/title??page=0&size=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
+
+    @Test
+    void only_titles_with_a_rating_of_4_or_more_are_brought() throws Exception {
+        titleRepository.save(new TitleBuilder().withRating(3.0).build());
+
+        mvc.perform(get("/title??page=0&size=1&minRating=4.0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void a_title_with_a_min_rating_of_4_is_brought() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().withRating(5.0).build());
+
+        mvc.perform(get("/title??page=0&size=1&minRating=4.0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())))
+                .andExpect(jsonPath("$[0].averageRating", comparesEqualTo(5.0)));
+    }
+}

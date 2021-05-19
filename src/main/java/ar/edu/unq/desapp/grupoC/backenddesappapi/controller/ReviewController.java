@@ -1,6 +1,6 @@
-package ar.edu.unq.desapp.grupoC.backenddesappapi.controllers;
+package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.controllers.specifications.*;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.ReviewService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
