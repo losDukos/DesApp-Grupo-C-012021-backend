@@ -8,10 +8,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class TitleByRating implements Specification<Title> {
+public class TitleByMinRating implements Specification<Title> {
     private final Double rating;
 
-    public TitleByRating(Double rating) {
+    public TitleByMinRating(Double rating) {
         this.rating = rating;
     }
 

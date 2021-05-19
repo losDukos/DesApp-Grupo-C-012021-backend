@@ -34,6 +34,8 @@ public class Title {
     Integer runtimeMinutes;
     @Convert(converter = StringListConverter.class)
     List<String> genres = new ArrayList<>();
+    @Column(name = "genres", insertable = false, updatable = false)
+    private String genresString;
     Double averageRating;
 
     @OneToMany(cascade=CascadeType.ALL)

@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByRating;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByGenres;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByMaxRating;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByMinRating;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,13 @@ public class TitleController {
     TitleService titleService;
 
     @GetMapping
-    public List<Title> getTitles(@RequestParam(required = false) Double minRating, Pageable pageable) {
-        Specification<Title> specs = Specification.where(new TitleByRating(minRating));
+    public List<Title> getTitles(@RequestParam(required = false) Double minRating,
+                                 @RequestParam(required = false) Double maxRating,
+                                 @RequestParam(required = false) List<String> genres,
+                                 Pageable pageable) {
+        Specification<Title> specs = Specification.where(new TitleByMinRating(minRating))
+                .and(new TitleByMaxRating(maxRating))
+                .and(new TitleByGenres(genres));
 
         return titleService.getTitles(specs, pageable);
     }
