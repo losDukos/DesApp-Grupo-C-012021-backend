@@ -53,7 +53,7 @@ public class TitleIntegrationTests {
         Title title = titleRepository.save(new TitleBuilder().build());
         titleRepository.save(new TitleBuilder().build());
 
-        mvc.perform(get("/title??page=0&size=1"))
+        mvc.perform(get("/title?page=0&size=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
@@ -63,7 +63,7 @@ public class TitleIntegrationTests {
     void only_titles_with_a_rating_of_4_or_more_are_brought() throws Exception {
         titleRepository.save(new TitleBuilder().withRating(3.0).build());
 
-        mvc.perform(get("/title??page=0&size=1&minRating=4.0"))
+        mvc.perform(get("/title?page=0&size=1&minRating=4.0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -72,7 +72,7 @@ public class TitleIntegrationTests {
     void a_title_with_a_min_rating_of_4_is_brought() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withRating(5.0).build());
 
-        mvc.perform(get("/title??page=0&size=1&minRating=4.0"))
+        mvc.perform(get("/title?page=0&size=1&minRating=4.0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())))
@@ -83,7 +83,7 @@ public class TitleIntegrationTests {
     void only_titles_with_a_rating_of_4_or_less_are_brought() throws Exception {
         titleRepository.save(new TitleBuilder().withRating(5.0).build());
 
-        mvc.perform(get("/title??page=0&size=1&maxRating=4.0"))
+        mvc.perform(get("/title?page=0&size=1&maxRating=4.0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -92,7 +92,7 @@ public class TitleIntegrationTests {
     void a_title_with_a_max_rating_of_4_is_brought() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withRating(4.0).build());
 
-        mvc.perform(get("/title??page=0&size=1&maxRating=4.0"))
+        mvc.perform(get("/title?page=0&size=1&maxRating=4.0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())))
@@ -103,7 +103,7 @@ public class TitleIntegrationTests {
     void no_action_titles_are_brought() throws Exception {
         titleRepository.save(new TitleBuilder().withRating(4.0).build());
 
-        mvc.perform(get("/title??page=0&size=1&genres=[\"action\"]"))
+        mvc.perform(get("/title?page=0&size=1&genres=[\"action\"]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -112,7 +112,7 @@ public class TitleIntegrationTests {
     void an_action_title_is_brought_by_action() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withGenres(Collections.singletonList("action")).build());
 
-        mvc.perform(get("/title??page=0&size=1&genres=action"))
+        mvc.perform(get("/title?page=0&size=1&genres=action"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
@@ -122,7 +122,7 @@ public class TitleIntegrationTests {
     void an_action_comedy_title_is_brought_by_action() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withGenres(Arrays.asList("action", "comedy")).build());
 
-        mvc.perform(get("/title??page=0&size=1&genres=action"))
+        mvc.perform(get("/title?page=0&size=1&genres=action"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
@@ -132,7 +132,7 @@ public class TitleIntegrationTests {
     void an_action_comedy_title_is_brought_by_action_comedy() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withGenres(Arrays.asList("action", "comedy")).build());
 
-        mvc.perform(get("/title??page=0&size=1&genres=action,comedy"))
+        mvc.perform(get("/title?page=0&size=1&genres=action,comedy"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
