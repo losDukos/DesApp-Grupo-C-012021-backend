@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
+import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByYears;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByGenres;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByMaxRating;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.TitleByMinRating;
@@ -26,10 +27,13 @@ public class TitleController {
     public List<Title> getTitles(@RequestParam(required = false) Double minRating,
                                  @RequestParam(required = false) Double maxRating,
                                  @RequestParam(required = false) List<String> genres,
+                                 @RequestParam(required = false) Integer fromYear,
+                                 @RequestParam(required = false) Integer toYear,
                                  Pageable pageable) {
         Specification<Title> specs = Specification.where(new TitleByMinRating(minRating))
                 .and(new TitleByMaxRating(maxRating))
-                .and(new TitleByGenres(genres));
+                .and(new TitleByGenres(genres))
+                .and(new TitleByYears(fromYear, toYear));
 
         return titleService.getTitles(specs, pageable);
     }

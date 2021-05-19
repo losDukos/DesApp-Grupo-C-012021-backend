@@ -24,4 +24,9 @@ public class TitleBuilder {
         title.setGenres(genres);
         return this;
     }
+
+    public TitleBuilder withYear(Integer year) {
+        title.setStartYear(year);
+        return this;
+    }
 }

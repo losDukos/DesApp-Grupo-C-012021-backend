@@ -137,4 +137,43 @@ public class TitleIntegrationTests {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
     }
+
+    @Test
+    void no_titles_from_the_nineties_are_brought() throws Exception {
+        titleRepository.save(new TitleBuilder().withYear(1980).build());
+
+        mvc.perform(get("/title?page=0&size=1&fromYear=1990&toYear=1999"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void a_title_from_the_nineties_is_brought() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().withYear(1995).build());
+
+        mvc.perform(get("/title?page=0&size=1&fromYear=1990&toYear=1999"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
+
+    @Test
+    void a_title_after_1995_is_brought() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().withYear(2020).build());
+
+        mvc.perform(get("/title?page=0&size=1&fromYear=1995"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
+
+    @Test
+    void a_title_before_1990_is_brought() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().withYear(1880).build());
+
+        mvc.perform(get("/title?page=0&size=1&toYear=1990"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
 }
