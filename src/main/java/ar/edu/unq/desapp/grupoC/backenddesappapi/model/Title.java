@@ -214,17 +214,22 @@ public class Title {
 
     public void addReview(Review review) {
         reviews.add(review);
-        calculateAverageRating();
+        calculateAverageRating(review.getRating());
         review.setReviewedTitle(this);
     }
 
-    public void calculateAverageRating() {
-        setAverageRating(reviews.stream().mapToDouble(Review::getRating).average().getAsDouble());
+    public void calculateAverageRating(Double lastRating) {
+        if (averageRating == null) {
+            setAverageRating(lastRating);
+        } else {
+            Double newAverage = (averageRating + lastRating) / 2;
+            setAverageRating(newAverage);
+        }
     }
 
     public void removeReview(Review review) {
         reviews.remove(review);
-        calculateAverageRating();
+        calculateAverageRating(review.getRating());
         review.setReviewedTitle(null);
     }
 }

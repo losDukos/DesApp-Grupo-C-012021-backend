@@ -84,7 +84,7 @@ public class Review {
     public void setRating(Double rating) {
         this.rating = rating;
         if (reviewedTitle != null) {
-            reviewedTitle.calculateAverageRating();
+            reviewedTitle.calculateAverageRating(rating);
         }
     }
 
