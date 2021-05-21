@@ -1,8 +1,10 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.builders;
 
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Actor;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TitleBuilder {
@@ -27,6 +29,11 @@ public class TitleBuilder {
 
     public TitleBuilder withYear(Integer year) {
         title.setStartYear(year);
+        return this;
+    }
+
+    public TitleBuilder withActor(Actor actor) {
+        title.setActors(Collections.singletonList(actor));
         return this;
     }
 }

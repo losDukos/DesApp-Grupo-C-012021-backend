@@ -1,12 +1,10 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -40,6 +38,9 @@ public class Title {
 
     @OneToMany(cascade=CascadeType.ALL)
     List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(cascade=CascadeType.ALL)
+    List<Actor> actors = new ArrayList<>();
 
     public Title() {}
 
@@ -180,6 +181,14 @@ public class Title {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
     }
 
     public void setOriginalTitle(Boolean originalTitle) {

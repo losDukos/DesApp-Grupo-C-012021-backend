@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.integration;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.TitleBuilder;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Actor;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import org.junit.jupiter.api.Test;
@@ -172,6 +173,27 @@ public class TitleIntegrationTests {
         Title title = titleRepository.save(new TitleBuilder().withYear(1880).build());
 
         mvc.perform(get("/title?page=0&size=1&toYear=1990"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
+
+    @Test
+    void no_titles_from_bruce_willis_are_brought() throws Exception {
+        Actor actor = new Actor("Marlon Brando");
+        titleRepository.save(new TitleBuilder().withActor(actor).build());
+
+        mvc.perform(get("/title?page=0&size=1&actor=Bruce Willis"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void a_title_from_bruce_willis_is_brought() throws Exception {
+        Actor actor = new Actor("Bruce Willis");
+        Title title = titleRepository.save(new TitleBuilder().withActor(actor).build());
+
+        mvc.perform(get("/title?page=0&size=1&actor=Bruce Willis"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
