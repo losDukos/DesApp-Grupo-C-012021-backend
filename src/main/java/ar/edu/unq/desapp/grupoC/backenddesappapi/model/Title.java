@@ -5,7 +5,6 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -33,9 +32,15 @@ public class Title {
     Integer runtimeMinutes;
     @Convert(converter = StringListConverter.class)
     List<String> genres = new ArrayList<>();
+    @Column(name = "genres", insertable = false, updatable = false)
+    private String genresString;
+    Double averageRating;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(cascade=CascadeType.ALL)
+    List<Actor> actors = new ArrayList<>();
 
     public Title() {}
 
@@ -178,6 +183,14 @@ public class Title {
         this.reviews = reviews;
     }
 
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
     public void setOriginalTitle(Boolean originalTitle) {
         isOriginalTitle = originalTitle;
     }
@@ -202,20 +215,32 @@ public class Title {
         return !reviews.isEmpty();
     }
 
-    @Transient
     public Double getAverageRating() {
-        OptionalDouble average = reviews.stream().mapToDouble(Review::getRating).average();
+        return averageRating;
+    }
 
-        return average.isPresent() ? average.getAsDouble() : null;
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 
     public void addReview(Review review) {
         reviews.add(review);
+        calculateAverageRating(review.getRating());
         review.setReviewedTitle(this);
+    }
+
+    public void calculateAverageRating(Double lastRating) {
+        if (averageRating == null) {
+            setAverageRating(lastRating);
+        } else {
+            Double newAverage = (averageRating + lastRating) / 2;
+            setAverageRating(newAverage);
+        }
     }
 
     public void removeReview(Review review) {
         reviews.remove(review);
+        calculateAverageRating(review.getRating());
         review.setReviewedTitle(null);
     }
 }

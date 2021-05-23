@@ -26,7 +26,9 @@ public class TitleTests {
 
     @Test
     void a_title_adds_a_review() {
-        title.addReview(new Review());
+        Review review = new Review();
+        review.setRating(5.0);
+        title.addReview(review);
 
         assertTrue(title.hasReviews());
     }
