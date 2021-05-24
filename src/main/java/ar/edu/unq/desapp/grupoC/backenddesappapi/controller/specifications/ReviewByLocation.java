@@ -1,26 +1,17 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
-import org.springframework.data.jpa.domain.Specification;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.QReview;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+public class ReviewByLocation {
 
-public class ReviewByLocation implements Specification<Review> {
 
-    private final String location;
-
-    public ReviewByLocation(String location) {
-        this.location = location;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Review> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public static BooleanExpression get(String location) {
         if (location == null) {
-            return criteriaBuilder.conjunction();
+            return null;
         }
-        return criteriaBuilder.equal(root.get("location"), location);
+
+        QReview review = QReview.review;
+        return review.location.eq(location);
     }
 }

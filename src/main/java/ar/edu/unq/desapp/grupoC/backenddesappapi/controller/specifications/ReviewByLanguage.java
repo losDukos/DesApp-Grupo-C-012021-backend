@@ -1,26 +1,16 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
-import org.springframework.data.jpa.domain.Specification;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.QReview;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+public class ReviewByLanguage {
 
-public class ReviewByLanguage implements Specification<Review> {
-
-    private final String language;
-
-    public ReviewByLanguage(String language) {
-        this.language = language;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Review> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public static BooleanExpression get(String language) {
         if (language == null) {
-            return criteriaBuilder.conjunction();
+            return null;
         }
-        return criteriaBuilder.equal(root.get("language"), language);
+
+        QReview review = QReview.review;
+        return review.language.eq(language);
     }
 }

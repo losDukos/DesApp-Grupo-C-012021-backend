@@ -2,9 +2,9 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public class ReviewService {
         return reviewRepository.findAllByReviewedTitleTitleIgnoreCaseContaining(title);
     }
 
-    public List<Review> getReviewsByTitleId(Specification<Review> specs, Pageable pageable) {
-        return reviewRepository.findAll(specs, pageable).getContent();
+    public List<Review> getReviewsByTitleId(Predicate predicate, Pageable pageable) {
+        return reviewRepository.findAll(predicate, pageable).getContent();
     }
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }

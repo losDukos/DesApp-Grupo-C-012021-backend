@@ -4,9 +4,10 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.ReviewService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +33,15 @@ public class ReviewController {
             @RequestParam(required = false) String language, @RequestParam(required = false) String location,
             Pageable pageable
     ) {
-        Specification<Review> specs = Specification.where(new ReviewByTitleId(id))
-                .and(new ReviewByType(type))
-                .and(new ReviewByLanguage(language))
-                .and(new ReviewByLocation(location))
-                .and(new ReviewBySpoilerAlert(spoilerAlert));
 
-        return reviewService.getReviewsByTitleId(specs, pageable);
+        Predicate predicate = new BooleanBuilder()
+                .and(ReviewByTitleId.get(id))
+                .and(ReviewByType.get(type))
+                .and(ReviewByLanguage.get(language))
+                .and(ReviewByLocation.get(location))
+                .and(ReviewBySpoilerAlert.get(spoilerAlert));
+
+        return reviewService.getReviewsByTitleId(predicate, pageable);
     }
 
     @PostMapping
