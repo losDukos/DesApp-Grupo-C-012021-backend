@@ -1,10 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.TitleService;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
