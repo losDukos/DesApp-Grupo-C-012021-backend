@@ -29,13 +29,7 @@ public class TitleController {
                                  @RequestParam(required = false) Integer toYear,
                                  @RequestParam(required = false) String actor,
                                  Pageable pageable) {
-        Predicate predicate = new BooleanBuilder()
-            .and(TitleByMinRating.get(minRating))
-            .and(TitleByMaxRating.get(maxRating))
-            .and(TitleByGenres.get(genres))
-            .and(TitleByYears.get(fromYear, toYear))
-            .and(TitleByActor.get(actor));
 
-        return titleService.getTitles(predicate, pageable);
+        return titleService.getTitles(minRating, maxRating, genres, fromYear, toYear, actor, pageable);
     }
 }

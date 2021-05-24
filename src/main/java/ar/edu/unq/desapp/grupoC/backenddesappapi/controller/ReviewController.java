@@ -29,19 +29,11 @@ public class ReviewController {
 
     @GetMapping("/id/{id}")
     public @ResponseBody List<Review> getReviewsByTitleId(
-            @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert, @RequestParam(required = false) String type,
-            @RequestParam(required = false) String language, @RequestParam(required = false) String location,
-            Pageable pageable
-    ) {
+            @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert,
+            @RequestParam(required = false) String type, @RequestParam(required = false) String language,
+            @RequestParam(required = false) String location, Pageable pageable) {
 
-        Predicate predicate = new BooleanBuilder()
-                .and(ReviewByTitleId.get(id))
-                .and(ReviewByType.get(type))
-                .and(ReviewByLanguage.get(language))
-                .and(ReviewByLocation.get(location))
-                .and(ReviewBySpoilerAlert.get(spoilerAlert));
-
-        return reviewService.getReviewsByTitleId(predicate, pageable);
+        return reviewService.getReviewsByTitleId(id, type, language, location, spoilerAlert, pageable);
     }
 
     @PostMapping
