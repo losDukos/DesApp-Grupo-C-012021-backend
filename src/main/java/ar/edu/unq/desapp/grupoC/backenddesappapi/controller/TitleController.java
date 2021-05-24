@@ -25,8 +25,9 @@ public class TitleController {
                                  @RequestParam(required = false) Integer fromYear,
                                  @RequestParam(required = false) Integer toYear,
                                  @RequestParam(required = false) String actor,
+                                 @RequestParam(required = false) Integer minReviews,
                                  Pageable pageable) {
 
-        return titleService.getTitles(minRating, maxRating, genres, fromYear, toYear, actor, pageable);
+        return titleService.getTitles(minRating, maxRating, genres, fromYear, toYear, actor, minReviews, pageable);
     }
 }
