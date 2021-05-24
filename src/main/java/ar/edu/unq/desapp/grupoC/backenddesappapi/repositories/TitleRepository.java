@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.repositories;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
