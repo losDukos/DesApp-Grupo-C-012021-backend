@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
 
 import javax.persistence.*;
 import java.util.ArrayList;

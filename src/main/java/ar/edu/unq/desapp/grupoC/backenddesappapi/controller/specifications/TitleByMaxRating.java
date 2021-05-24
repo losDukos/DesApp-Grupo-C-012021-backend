@@ -1,25 +1,15 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
-import org.springframework.data.jpa.domain.Specification;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.QTitle;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-public class TitleByMaxRating implements Specification<Title> {
-    private final Double rating;
-
-    public TitleByMaxRating(Double rating) {
-        this.rating = rating;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Title> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        if (rating == null) {
-            return criteriaBuilder.conjunction();
+public class TitleByMaxRating {
+    public static BooleanExpression get(Double rating) {
+        if(rating == null) {
+            return null;
         }
-        return criteriaBuilder.lessThanOrEqualTo(root.get("averageRating"), rating);
+
+        QTitle title = QTitle.title1;
+        return title.averageRating.loe(rating);
     }
 }

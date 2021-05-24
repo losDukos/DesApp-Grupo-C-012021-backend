@@ -1,26 +1,16 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
-import org.springframework.data.jpa.domain.Specification;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.QTitle;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+public class TitleByActor {
 
-public class TitleByActor implements Specification<Title> {
-
-    private final String name;
-
-    public TitleByActor(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Title> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        if (name == null) {
-            return criteriaBuilder.conjunction();
+    public static BooleanExpression get(String name) {
+        if(name == null) {
+            return null;
         }
-        return criteriaBuilder.equal(root.join("actors").get("name"), name);
+
+        QTitle title = QTitle.title1;
+        return title.actors.any().name.eq(name);
     }
 }
