@@ -60,4 +60,11 @@ public class ReviewController {
 
         return updatedReview.getUserAppraisal(user).get();
     }
+    @PostMapping(path = "/report/{idReview}")
+    public Review reportReview( @PathVariable Long idReview){
+        Review review = reviewService.getReviewById(idReview);
+        review.setIsReported(true);
+        Review updatedReview = reviewService.updateReview(review);
+        return updatedReview;
+    }
 }
