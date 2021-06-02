@@ -13,6 +13,7 @@ public class ReviewBuilder {
     private Boolean isPremium = false;
     private Double rating = 5.0;
     private Date date = new Date();
+    private Boolean isReported = false;
 
     public ReviewBuilder withSpoilerAlert(Boolean spoilerAlert) {
         this.spoilerAlert = spoilerAlert;
@@ -46,13 +47,13 @@ public class ReviewBuilder {
 
     public Review build(Title title) {
         Review review = new Review("test summary", "extended test summary", rating,
-                date, "origin", language, spoilerAlert, location, isPremium);
+                date, "origin", language, spoilerAlert, location, isPremium, isReported);
         title.addReview(review);
         return review;
     }
 
     public Review build() {
         return new Review("test summary", "extended test summary", rating,
-                date, "origin", language, spoilerAlert, location, isPremium);
+                date, "origin", language, spoilerAlert, location, isPremium, isReported);
     }
 }

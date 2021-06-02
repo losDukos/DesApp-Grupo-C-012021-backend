@@ -24,6 +24,8 @@ public class Review {
     Boolean spoilerAlert;
     String location;
     Boolean isPremium = false;
+    // TODO:You must have a minimum number of reports for the review to be reported.
+    Boolean isReported = false;
 
     @ManyToOne
     @JsonIgnoreProperties({"ordering", "region", "language", "types", "attributes", "isOriginalTitle", "titleType",
@@ -41,7 +43,8 @@ public class Review {
     public Review() {}
 
     public Review(String textSummary, String textExtended, Double rating,
-                  Date date, String origin, String language, Boolean spoilerAlert, String location, Boolean isPremium) {
+                  Date date, String origin, String language, Boolean spoilerAlert,
+                  String location, Boolean isPremium, Boolean isReported) {
         this.textSummary = textSummary;
         this.textExtended = textExtended;
         this.rating = rating;
@@ -51,6 +54,7 @@ public class Review {
         this.spoilerAlert = spoilerAlert;
         this.location = location;
         this.isPremium = isPremium;
+        this.isReported = isReported;
     }
 
     public Long getId() {
@@ -134,6 +138,14 @@ public class Review {
 
     public void setPremium(Boolean premium) {
         isPremium = premium;
+    }
+
+    public Boolean getIsReported() {
+        return isReported;
+    }
+
+    public void setIsReported(Boolean isReported) {
+        isReported = isReported;
     }
 
     public Title getReviewedTitle() {
