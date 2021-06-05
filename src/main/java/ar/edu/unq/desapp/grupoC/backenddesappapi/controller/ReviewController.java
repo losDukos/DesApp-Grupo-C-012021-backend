@@ -1,12 +1,10 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.ReviewService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,17 +26,11 @@ public class ReviewController {
 
     @GetMapping("/id/{id}")
     public @ResponseBody List<Review> getReviewsByTitleId(
-            @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert, @RequestParam(required = false) String type,
-            @RequestParam(required = false) String language, @RequestParam(required = false) String location,
-            Pageable pageable
-    ) {
-        Specification<Review> specs = Specification.where(new ReviewByTitleId(id))
-                .and(new ReviewByType(type))
-                .and(new ReviewByLanguage(language))
-                .and(new ReviewByLocation(location))
-                .and(new ReviewBySpoilerAlert(spoilerAlert));
+            @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert,
+            @RequestParam(required = false) String type, @RequestParam(required = false) String language,
+            @RequestParam(required = false) String location, Pageable pageable) {
 
-        return reviewService.getReviewsByTitleId(specs, pageable);
+        return reviewService.getReviewsByTitleId(id, type, language, location, spoilerAlert, pageable);
     }
 
     @PostMapping
