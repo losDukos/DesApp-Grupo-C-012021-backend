@@ -42,7 +42,7 @@ public class ReviewController {
         return reviewService.getReviewsByTitleId(specs, pageable);
     }
 
-    @GetMapping("/id/unreportereds/{id}")
+    @GetMapping("/id/unreported/{id}")
     public @ResponseBody List<Review> getReviewsUnreporteredsByTitleId(
             @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert, @RequestParam(required = false) String type,
             @RequestParam(required = false) String language, @RequestParam(required = false) String location,
@@ -82,7 +82,6 @@ public class ReviewController {
     @PostMapping(path = "/report/{idReview}")
     public Review reportReview( @PathVariable Long idReview){
         Review review = reviewService.getReviewById(idReview);
-        review.setIsReported(true);
-        return reviewService.updateReview(review);
+        return reviewService.changeReport(review);
     }
 }

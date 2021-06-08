@@ -44,7 +44,7 @@ public class Review {
 
     public Review(String textSummary, String textExtended, Double rating,
                   Date date, String origin, String language, Boolean spoilerAlert,
-                  String location, Boolean isPremium, Boolean isReported) {
+                  String location, Boolean isPremium) {
         this.textSummary = textSummary;
         this.textExtended = textExtended;
         this.rating = rating;
@@ -54,7 +54,7 @@ public class Review {
         this.spoilerAlert = spoilerAlert;
         this.location = location;
         this.isPremium = isPremium;
-        this.isReported = isReported;
+        this.isReported = false;
     }
 
     public Long getId() {
