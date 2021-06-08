@@ -34,24 +34,6 @@ public class ReviewController {
         return reviewService.getReviewsByTitleId(id, type, language, location, spoilerAlert, pageable);
     }
 
-    @GetMapping("/id/unreported/{id}")
-    public @ResponseBody List<Review> getReviewsUnreporteredsByTitleId(
-            @PathVariable String id, @RequestParam(required = false) Boolean spoilerAlert, @RequestParam(required = false) String type,
-            @RequestParam(required = false) String language, @RequestParam(required = false) String location,
-            Pageable pageable
-    ){
-        Specification<Review> specs = Specification.where(new ReviewByTitleId(id))
-                .and(new ReviewByType(type))
-                .and(new ReviewByLanguage(language))
-                .and(new ReviewByLocation(location))
-                .and(new ReviewBySpoilerAlert(spoilerAlert));
-
-        List<Review> allReviews = reviewService.getReviewsByTitleId(specs, pageable);
-        return allReviews.stream()
-                .filter(r -> !r.getIsReported())
-                .collect(Collectors.toList());
-    }
-
     @PostMapping
     public Review addReview(@RequestBody Review review) {
         return reviewService.addReview(review);
