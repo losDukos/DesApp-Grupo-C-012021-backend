@@ -47,13 +47,13 @@ public class ReviewBuilder {
 
     public Review build(Title title) {
         Review review = new Review("test summary", "extended test summary", rating,
-                date, "origin", language, spoilerAlert, location, isPremium, isReported);
+                date, "origin", language, spoilerAlert, location, isPremium);
         title.addReview(review);
         return review;
     }
 
     public Review build() {
         return new Review("test summary", "extended test summary", rating,
-                date, "origin", language, spoilerAlert, location, isPremium, isReported);
+                date, "origin", language, spoilerAlert, location, isPremium);
     }
 }
