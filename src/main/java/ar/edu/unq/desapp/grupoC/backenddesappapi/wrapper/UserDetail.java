@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.wrapper;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;

@@ -1,9 +1,5 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import ar.edu.unq.desapp.grupoC.backenddesappapi.config.JwtTokenUtil;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.security.JwtRequest;
@@ -12,14 +8,9 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.wrapper.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 
 import org.springframework.web.bind.annotation.*;
 
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.validation.Valid;
 
