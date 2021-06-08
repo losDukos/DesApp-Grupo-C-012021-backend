@@ -13,6 +13,7 @@ public class ReviewBuilder {
     private Boolean isPremium = false;
     private Double rating = 5.0;
     private Date date = new Date();
+    private Boolean isReported = false;
 
     public ReviewBuilder withSpoilerAlert(Boolean spoilerAlert) {
         this.spoilerAlert = spoilerAlert;

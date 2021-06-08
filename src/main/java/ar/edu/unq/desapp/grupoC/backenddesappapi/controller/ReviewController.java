@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "review")
@@ -51,5 +52,10 @@ public class ReviewController {
         Review updatedReview = reviewService.updateReview(review);
 
         return updatedReview.getUserAppraisal(user).get();
+    }
+    @PostMapping(path = "/report/{idReview}")
+    public Review reportReview( @PathVariable Long idReview){
+        Review review = reviewService.getReviewById(idReview);
+        return reviewService.changeReport(review);
     }
 }

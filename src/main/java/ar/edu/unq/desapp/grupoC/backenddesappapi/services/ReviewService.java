@@ -41,4 +41,10 @@ public class ReviewService {
     public Review updateReview(Review review) {
         return reviewRepository.save(review);
     }
+
+    public Review changeReport(Review review){
+        Review reviewUpdated = review;
+        reviewUpdated.setIsReported(true);
+        return this.updateReview(reviewUpdated);
+    }
 }
