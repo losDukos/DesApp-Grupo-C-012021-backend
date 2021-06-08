@@ -198,4 +198,34 @@ public class TitleIntegrationTests {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
     }
+
+    @Test
+    void no_well_reviewed_titles_are_brought() throws Exception {
+        titleRepository.save(new TitleBuilder().build());
+
+        mvc.perform(get("/title?page=0&size=1&minReviews=3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void a_title_with_two_reviews_is_brought() throws Exception {
+        Title title = titleRepository.save(new TitleBuilder().withMixedReviews().build());
+
+        mvc.perform(get("/title?page=0&size=1&minReviews=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
+
+    @Test
+    void a_title_with_two_reviews_where_bruce_willis_acted_is_brought() throws Exception {
+        Actor bruceWillis = new Actor("Bruce Willis");
+        Title title = titleRepository.save(new TitleBuilder().withMixedReviews().withActor(bruceWillis).build());
+
+        mvc.perform(get("/title?page=0&size=1&minReviews=2&actor=Bruce Willis"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
+    }
 }

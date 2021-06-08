@@ -36,4 +36,16 @@ public class TitleBuilder {
         title.setActors(Collections.singletonList(actor));
         return this;
     }
+
+    public TitleBuilder withMixedReviews() {
+        Review positiveReview = new Review();
+        positiveReview.setRating(5.0);
+        Review negativeReview = new Review();
+        negativeReview.setRating(1.0);
+
+        title.addReview(positiveReview);
+        title.addReview(negativeReview);
+
+        return this;
+    }
 }

@@ -1,31 +1,21 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications;
 
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
-import org.springframework.data.jpa.domain.Specification;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.QTitle;
+import com.querydsl.core.BooleanBuilder;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+public class TitleByYears {
 
-public class TitleByYears implements Specification<Title> {
-    private final Integer fromYear;
-    private final Integer toYear;
+    public static BooleanBuilder get(Integer fromYear, Integer toYear) {
+        QTitle title = QTitle.title1;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-    public TitleByYears(Integer fromYear, Integer toYear) {
-        this.fromYear = fromYear;
-        this.toYear = toYear;
-    }
-
-    @Override
-    public Predicate toPredicate(Root<Title> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        if (fromYear == null && toYear == null) {
-            return criteriaBuilder.conjunction();
-        } else if (fromYear == null) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get("startYear"), toYear);
-        } else if (toYear == null) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get("startYear"), fromYear);
+        if(fromYear != null) {
+            booleanBuilder.and(title.startYear.goe(fromYear));
         }
-        return criteriaBuilder.between(root.get("startYear"), fromYear, toYear);
+        if(toYear != null) {
+            booleanBuilder.and(title.startYear.loe(toYear));
+        }
+
+        return booleanBuilder;
     }
 }
