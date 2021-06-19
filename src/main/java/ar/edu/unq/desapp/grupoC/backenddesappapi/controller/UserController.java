@@ -34,8 +34,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody UserRegisterDto userRegisterDto){
-        return userService.addUser(userRegisterDto.getName(), userRegisterDto.getPassword(), userRegisterDto.getMail());
+    public ResponseEntity<JwtResponse> register(@RequestBody UserRegisterDto userRegisterDto){
+        UserDetail user = userService.addUser(userRegisterDto.getName(), userRegisterDto.getPassword(), userRegisterDto.getMail());
+        final String token = jwtTokenUtil.generateToken(user);
+        return ResponseEntity.ok(new JwtResponse(token, user.getId()));
     }
 
 }

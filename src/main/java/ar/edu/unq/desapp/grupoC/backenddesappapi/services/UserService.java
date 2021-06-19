@@ -47,9 +47,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).get();
     }
 
-    public User addUser(String username, String pws, String email) {
+    public UserDetail addUser(String username, String pws, String email) {
         User user = new User(username, passwordEncoder.encode(pws), email);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return loadUserByUsername(username);
     }
 
     public void authenticate(String username, String password) throws Exception {

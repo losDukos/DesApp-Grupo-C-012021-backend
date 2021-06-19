@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .anonymous().and()
                 .authorizeRequests()
-                .antMatchers("/user**")
+                .antMatchers("/user/**")
                 .permitAll()
                 .and()
                 .authorizeRequests()
