@@ -1,22 +1,22 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.dto;
 
 public class UserRegisterDto {
-    String name;
+    String username;
     String password;
     String mail;
 
-    public UserRegisterDto(String name, String pass, String mail){
-        this.name = name;
+    public UserRegisterDto(String username, String pass, String mail){
+        this.username = username;
         this.password = pass;
         this.mail = mail;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

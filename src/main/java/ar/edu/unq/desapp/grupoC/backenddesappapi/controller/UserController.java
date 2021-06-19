@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.config.JwtTokenUtil;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.UserRegisterDto;
-import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.security.JwtRequest;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.security.JwtResponse;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
@@ -35,7 +34,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<JwtResponse> register(@RequestBody UserRegisterDto userRegisterDto){
-        UserDetail user = userService.addUser(userRegisterDto.getName(), userRegisterDto.getPassword(), userRegisterDto.getMail());
+        UserDetail user = userService.addUser(userRegisterDto.getUsername(), userRegisterDto.getPassword(), userRegisterDto.getMail());
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new JwtResponse(token, user.getId(), user.getUsername()));
     }
