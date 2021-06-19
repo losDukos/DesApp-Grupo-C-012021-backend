@@ -38,7 +38,7 @@ public class DataLoader implements ApplicationRunner {
             return;
         }
 
-        User user = new User("Test User", "password");
+        User user = new User("Test User", "password", "");
         userRepository.save(user);
     }
 

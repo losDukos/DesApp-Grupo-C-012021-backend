@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.config.JwtTokenUtil;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.UserRegisterDto;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.security.JwtRequest;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.security.JwtResponse;
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestParam("user") String username, @RequestParam("password") String pws, @RequestParam("email") String email){
-        return userService.addUser(username, pws, email);
+    public User register(@RequestBody UserRegisterDto userRegisterDto){
+        return userService.addUser(userRegisterDto.getName(), userRegisterDto.getPassword(), userRegisterDto.getMail());
     }
 
 }
