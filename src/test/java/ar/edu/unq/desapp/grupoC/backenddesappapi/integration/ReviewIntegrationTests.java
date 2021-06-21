@@ -9,18 +9,25 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import reactor.core.publisher.Mono;
 
 import javax.transaction.Transactional;
 
 import java.text.SimpleDateFormat;
-import static org.hamcrest.Matchers.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,12 +49,17 @@ public class ReviewIntegrationTests {
     @Autowired
     private UserRepository userRepository;
 
+    @MockBean
+    private ReactiveRedisOperations<String, Review> mockRedisTemplate;
+
     private Title title;
     private Review review;
 
     @BeforeEach
     void setup() {
         title = titleRepository.save(new Title("aTitleId", "Title"));
+        Mono<Long> mockMono = Mockito.mock((Mono.class));
+        Mockito.when(mockRedisTemplate.convertAndSend(anyString(), any(Review.class))).thenReturn(mockMono);
     }
 
     // GET: Reviews by Title title
