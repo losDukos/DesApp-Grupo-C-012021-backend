@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.integration;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.TitleBuilder;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.factory.ControllerTestFactory;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Actor;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -132,8 +134,9 @@ public class TitleIntegrationTests {
     @Test
     void an_action_comedy_title_is_brought_by_action_comedy() throws Exception {
         Title title = titleRepository.save(new TitleBuilder().withGenres(Arrays.asList("action", "comedy")).build());
-
-        mvc.perform(get("/title?page=0&size=1&genres=action,comedy"))
+        String token = ControllerTestFactory.getUserToken(mvc);
+        mvc.perform(get("/title?page=0&size=1&genres=action,comedy")
+                .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].titleId", comparesEqualTo(title.getTitleId())));
