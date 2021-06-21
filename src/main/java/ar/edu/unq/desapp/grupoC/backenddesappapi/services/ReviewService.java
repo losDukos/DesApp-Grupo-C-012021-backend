@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.connection.ReactiveSubscription;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
@@ -41,6 +42,7 @@ public class ReviewService {
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
 
+    @CacheEvict(value = "titles", key = "#review.reviewedTitle.title")
     public Review addReview(Review review) {
         Review savedReview = reviewRepository.save(review);
         String topic = getReviewTopic(review.getPlatform(), review.getReviewedTitle().getTitleId());

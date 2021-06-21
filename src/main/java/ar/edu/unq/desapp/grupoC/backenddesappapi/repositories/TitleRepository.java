@@ -13,4 +13,5 @@ public interface TitleRepository extends PagingAndSortingRepository<Title, Strin
 
     List<Title> findAll();
     Page<Title> findAll(Predicate predicate, Pageable pageable);
+    Title findByTitle(String title);
 }

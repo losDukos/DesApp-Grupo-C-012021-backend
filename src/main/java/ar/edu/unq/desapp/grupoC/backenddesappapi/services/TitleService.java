@@ -1,11 +1,13 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.AbridgedTitle;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,10 @@ public class TitleService {
                 .and(TitleWellReviewed.get(minReviews));
 
         return titleRepository.findAll(predicate, pageable).getContent();
+    }
+
+    @Cacheable(value = "titleCache")
+    public Title getAbridgedTitle(String title) {
+        return titleRepository.findByTitle(title);
     }
 }
