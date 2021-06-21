@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Review {
 
     @Id
