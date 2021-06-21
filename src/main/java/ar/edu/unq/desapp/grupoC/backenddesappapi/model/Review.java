@@ -20,6 +20,7 @@ public class Review {
     // TODO: Make sure this cannot be null
     Double rating;
     Date date;
+    String platform;
     String origin;
     String language;
     Boolean spoilerAlert;
@@ -101,6 +102,14 @@ public class Review {
         this.date = date;
     }
 
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
     public String getOrigin() {
         return origin;
     }
@@ -141,12 +150,12 @@ public class Review {
         isPremium = premium;
     }
 
-    public Boolean getIsReported() {
+    public Boolean getReported() {
         return isReported;
     }
 
-    public void setIsReported(Boolean isReported) {
-        isReported = isReported;
+    public void setReported(Boolean reported) {
+        isReported = reported;
     }
 
     public Title getReviewedTitle() {

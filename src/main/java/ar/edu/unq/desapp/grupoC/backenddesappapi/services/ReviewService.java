@@ -43,7 +43,7 @@ public class ReviewService {
 
     public Review addReview(Review review) {
         Review savedReview = reviewRepository.save(review);
-        String topic = getReviewTopic(review.getReviewedTitle().getTitleId());
+        String topic = getReviewTopic(review.getPlatform(), review.getReviewedTitle().getTitleId());
         redisTemplate.convertAndSend(topic, savedReview).subscribe();
         return savedReview;
     }
@@ -54,16 +54,16 @@ public class ReviewService {
 
     public Review changeReport(Review review){
         Review reviewUpdated = review;
-        reviewUpdated.setIsReported(true);
+        reviewUpdated.setReported(true);
         return this.updateReview(reviewUpdated);
     }
 
     public void listenForReviews(String platform, String titleId, String callback) {
         redisTemplate
-                .listenTo(ChannelTopic.of(getReviewTopic(titleId)))
+                .listenTo(ChannelTopic.of(getReviewTopic(platform, titleId)))
                 .map(ReactiveSubscription.Message::getMessage)
                 .subscribe((Review review) -> {
-                    System.out.println("Letting subscribers of title "
+                    System.out.println("Letting " + platform + " subscribers of title "
                             + review.getReviewedTitle().getTitleId()
                             + " know that a new review has been written.\nRating: "
                             + review.getRating());
@@ -72,7 +72,7 @@ public class ReviewService {
         System.out.println("Platform " + platform + " subscribed to reviews from title " + titleId);
     }
 
-    private String getReviewTopic(String titleId) {
-        return "Review for title with ID " + titleId;
+    private String getReviewTopic(String platform, String titleId) {
+        return "Review in platform " + platform + " for title with ID " + titleId;
     }
 }
