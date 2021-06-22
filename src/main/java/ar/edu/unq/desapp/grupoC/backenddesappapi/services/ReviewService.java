@@ -42,7 +42,6 @@ public class ReviewService {
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
 
-    @CacheEvict(value = "titles", key = "#review.reviewedTitle.title")
     public Review addReview(Review review) {
         Review savedReview = reviewRepository.save(review);
         String topic = getReviewTopic(review.getPlatform(), review.getReviewedTitle().getTitleId());
