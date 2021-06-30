@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.integration;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.TitleBuilder;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.config.TestRedisConfiguration;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.factory.ControllerTestFactory;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -35,18 +36,19 @@ public class RedisIntegrationTests {
 
     @Test
     void an_abridged_title_is_brought_from_redis_the_second_time() throws Exception {
+        String token = ControllerTestFactory.getUserToken(mvc);
         String aTestTitle = "a test title";
         when(titleRepository.findByTitle(aTestTitle)).thenReturn(new TitleBuilder().withTitle(aTestTitle).build());
 
         verify(titleRepository, Mockito.times(0)).findByTitle(aTestTitle);
 
-        mvc.perform(get("/title/" + aTestTitle))
+        mvc.perform(get("/title/" + aTestTitle).header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", comparesEqualTo(aTestTitle)));
 
         verify(titleRepository, Mockito.times(1)).findByTitle(aTestTitle);
 
-        mvc.perform(get("/title/" + aTestTitle))
+        mvc.perform(get("/title/" + aTestTitle).header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", comparesEqualTo(aTestTitle)));
 
