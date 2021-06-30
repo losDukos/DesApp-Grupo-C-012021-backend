@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
-import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.AbridgedTitle;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import com.querydsl.core.BooleanBuilder;

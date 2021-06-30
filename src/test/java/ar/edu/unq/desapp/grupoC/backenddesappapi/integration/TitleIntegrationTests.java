@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.integration;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.builders.TitleBuilder;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.config.TestRedisConfiguration;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Actor;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = TestRedisConfiguration.class)
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
