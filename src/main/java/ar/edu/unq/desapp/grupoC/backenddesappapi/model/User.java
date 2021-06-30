@@ -12,12 +12,15 @@ public class User {
     Long id;
     String name;
     String password;
+    String token;
+    String email;
 
     public User() {}
 
-    public User(String name, String password) {
+    public User(String name, String password, String email) {
         this.name = name;
         this.password = password;
+        this.email = email;
     }
 
     public Long getId() {
@@ -44,5 +47,11 @@ public class User {
         this.password = password;
     }
 
+    public String getToken() { return token; }
 
+    public void setToken(String token) { this.token = token; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 }
