@@ -76,4 +76,8 @@ public class ReviewService {
     private String getReviewTopic(String platform, String titleId) {
         return "Review in platform " + platform + " for title with ID " + titleId;
     }
+
+    public List<Review> getReviewsByUser(Long userId) {
+        return reviewRepository.getReviewsByUser(userId);
+    }
 }

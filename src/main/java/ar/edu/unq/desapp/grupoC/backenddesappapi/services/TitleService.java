@@ -35,4 +35,8 @@ public class TitleService {
     public Title getAbridgedTitle(String title) {
         return titleRepository.findByTitle(title);
     }
+
+    public List<Title> getTitlesReviewedBy(Long userId) {
+        return titleRepository.findReviewedBy(userId);
+    }
 }
