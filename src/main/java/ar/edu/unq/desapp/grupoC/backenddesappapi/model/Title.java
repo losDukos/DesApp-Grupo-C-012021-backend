@@ -39,12 +39,10 @@ public class Title implements Serializable {
     private String genresString;
     Double averageRating;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade=CascadeType.ALL)
     List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade=CascadeType.ALL)
     List<Actor> actors = new ArrayList<>();
 
     public Title() {}
