@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
+import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.ListenForReviewsRequestBody;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.ReviewService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
@@ -8,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "review")
@@ -57,5 +57,10 @@ public class ReviewController {
     public Review reportReview( @PathVariable Long idReview){
         Review review = reviewService.getReviewById(idReview);
         return reviewService.changeReport(review);
+    }
+
+    @PostMapping(path = "/listen")
+    public void listenForReviews(@RequestBody ListenForReviewsRequestBody request) {
+        reviewService.listenForReviews(request.getPlatform(), request.getTitle(), request.getCallback());
     }
 }
