@@ -1,14 +1,17 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.converters.StringListConverter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Title {
+public class Title implements Serializable {
     // AKAs
     @Id
     String titleId;

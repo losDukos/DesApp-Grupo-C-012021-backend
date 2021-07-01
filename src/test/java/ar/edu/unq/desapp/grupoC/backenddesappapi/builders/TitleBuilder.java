@@ -48,4 +48,10 @@ public class TitleBuilder {
 
         return this;
     }
+
+    public TitleBuilder withTitle(String originalTitle) {
+        title.setTitle(originalTitle);
+
+        return this;
+    }
 }

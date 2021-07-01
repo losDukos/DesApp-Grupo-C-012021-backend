@@ -1,13 +1,11 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.controller;
 
+import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.AbridgedTitle;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,11 @@ public class TitleController {
                                  Pageable pageable) {
 
         return titleService.getTitles(minRating, maxRating, genres, fromYear, toYear, actor, minReviews, pageable);
+    }
+
+    @GetMapping(path = "/{name}")
+    public AbridgedTitle getAbridgedTitleByTitle(@PathVariable String name) {
+        Title retrievedTitle = titleService.getAbridgedTitle(name);
+        return new AbridgedTitle(retrievedTitle);
     }
 }
