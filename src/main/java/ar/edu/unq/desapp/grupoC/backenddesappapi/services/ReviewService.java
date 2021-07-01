@@ -68,7 +68,13 @@ public class ReviewService {
                             + review.getReviewedTitle().getTitleId()
                             + " know that a new review has been written.\nRating: "
                             + review.getRating());
-                    WebClient.create(callback).post();
+                    WebClient.builder()
+                            .baseUrl(callback)
+                            .build()
+                            .get()
+                            .retrieve()
+                            .bodyToMono(Object.class)
+                            .subscribe();
                 });
         System.out.println("Platform " + platform + " subscribed to reviews from title " + titleId);
     }
