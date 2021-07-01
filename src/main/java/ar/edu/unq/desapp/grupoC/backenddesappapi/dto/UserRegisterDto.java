@@ -1,8 +1,13 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class UserRegisterDto {
+    @NotEmpty(message = "Username is mandatory")
     String username;
+    @NotEmpty(message = "Password is mandatory")
     String password;
+    @NotEmpty(message = "Email is mandatory")
     String mail;
 
     public UserRegisterDto(String username, String pass, String mail){

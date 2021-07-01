@@ -5,9 +5,9 @@ import javax.validation.constraints.NotEmpty;
 
 public class JwtRequest implements Serializable {
     private static final long serialVersionUID = 5926468583005150707L;
-    @NotEmpty
+    @NotEmpty(message = "Username is mandatory")
     private String username;
-    @NotEmpty
+    @NotEmpty(message = "Password is mandatory")
     private String password;
 
     public JwtRequest() {

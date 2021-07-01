@@ -12,14 +12,19 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.services.TitleService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.wrapper.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "user")
@@ -47,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JwtResponse> register(@RequestBody UserRegisterDto userRegisterDto){
+    public ResponseEntity<JwtResponse> register(@RequestBody @Valid UserRegisterDto userRegisterDto){
         UserDetail user = userService.addUser(userRegisterDto.getUsername(), userRegisterDto.getPassword(), userRegisterDto.getMail());
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new JwtResponse(token, user.getId(), user.getUsername()));
@@ -62,5 +67,18 @@ public class UserController {
         List<Review> reviewsWritten = reviewService.getReviewsByUser(userDetails.getId());
 
         return ResponseEntity.ok(new UserMetrics(titlesReviewed, reviewsWritten));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
