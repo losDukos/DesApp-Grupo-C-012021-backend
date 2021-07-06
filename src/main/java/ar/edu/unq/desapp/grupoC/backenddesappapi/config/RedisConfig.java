@@ -41,7 +41,6 @@ public class RedisConfig {
                 .withCacheConfiguration("titleCache",
                         RedisCacheConfiguration.defaultCacheConfig()
                                 .entryTtl(Duration.ofSeconds(5))
-                                .disableCachingNullValues()
                                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer<>(Title.class))));
     }
 }

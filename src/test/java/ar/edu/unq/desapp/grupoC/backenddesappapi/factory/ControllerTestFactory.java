@@ -14,7 +14,7 @@ public class ControllerTestFactory {
         AtomicReference<String> token = new AtomicReference<>("");
         mvc.perform(post("/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\": \"test user\", \"password\": \"test password\"}"))
+                .content("{\"username\": \"test user\", \"password\": \"test password\", \"mail\": \"email\"}"))
                 .andDo(handler -> {
                     String body = handler.getResponse().getContentAsString();
                     token.set((String) new JSONObject(body).get("token"));

@@ -4,8 +4,10 @@ import ar.edu.unq.desapp.grupoC.backenddesappapi.dto.ListenForReviewsRequestBody
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.ReviewService;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.services.UserService;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.wrapper.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +38,9 @@ public class ReviewController {
 
     @PostMapping
     public Review addReview(@RequestBody Review review) {
-        return reviewService.addReview(review);
+        UserDetail userDetails = (UserDetail) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        return reviewService.addReview(review, userDetails.getId());
     }
 
     @PostMapping(path = "/{idReview}")

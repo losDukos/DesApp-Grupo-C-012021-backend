@@ -2,11 +2,12 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.connection.ReactiveSubscription;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
@@ -21,6 +22,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ReactiveRedisOperations<String, Review> redisTemplate;
@@ -42,7 +46,9 @@ public class ReviewService {
 
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
 
-    public Review addReview(Review review) {
+    public Review addReview(Review review, Long userId) {
+        User user = userRepository.findById(userId).get();
+        review.setUser(user);
         Review savedReview = reviewRepository.save(review);
         String topic = getReviewTopic(review.getPlatform(), review.getReviewedTitle().getTitleId());
         redisTemplate.convertAndSend(topic, savedReview).subscribe();
