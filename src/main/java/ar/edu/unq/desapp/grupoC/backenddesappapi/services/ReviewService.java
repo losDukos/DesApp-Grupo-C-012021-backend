@@ -2,8 +2,10 @@ package ar.edu.unq.desapp.grupoC.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoC.backenddesappapi.controller.specifications.*;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Review;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.model.Title;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.ReviewRepository;
+import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.TitleRepository;
 import ar.edu.unq.desapp.grupoC.backenddesappapi.repositories.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -22,6 +24,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private TitleRepository titleRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,10 +52,17 @@ public class ReviewService {
     public Review getReviewById(Long id) { return reviewRepository.findById(id).get(); }
 
     public Review addReview(Review review, Long userId) {
+        // Saving user
         User user = userRepository.findById(userId).get();
         review.setUser(user);
+        // Saving review
+        String titleId = review.getReviewedTitle().getTitleId();
         Review savedReview = reviewRepository.save(review);
-        String topic = getReviewTopic(review.getPlatform(), review.getReviewedTitle().getTitleId());
+        // Saving title
+        Title title = titleRepository.findById(titleId).get();
+        title.addReview(savedReview);
+        titleRepository.save(title);
+        String topic = getReviewTopic(review.getPlatform(), titleId);
         redisTemplate.convertAndSend(topic, savedReview).subscribe();
         return savedReview;
     }
