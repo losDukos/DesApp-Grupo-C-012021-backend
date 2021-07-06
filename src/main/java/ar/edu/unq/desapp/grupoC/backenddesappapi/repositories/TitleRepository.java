@@ -17,6 +17,6 @@ public interface TitleRepository extends PagingAndSortingRepository<Title, Strin
     Page<Title> findAll(Predicate predicate, Pageable pageable);
     Title findByTitle(String title);
 
-    @Query("SELECT t FROM Title t JOIN Review r ON t = r.reviewedTitle WHERE r.user.id = :userId")
+    @Query("SELECT DISTINCT t FROM Title t JOIN Review r ON t = r.reviewedTitle WHERE r.user.id = :userId")
     List<Title> findReviewedBy(@Param("userId") Long userId);
 }
