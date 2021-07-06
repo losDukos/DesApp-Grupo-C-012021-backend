@@ -45,8 +45,10 @@ public class ReviewController {
 
     @PostMapping(path = "/{idReview}")
     public Appraisal rateReview(@RequestBody UserAppraisal userAppraisal, @PathVariable Long idReview) {
+        UserDetail userDetails = (UserDetail) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
         Review review = reviewService.getReviewById(idReview);
-        User user = userService.userById(userAppraisal.getUserId());
+        User user = userService.userById(userDetails.getId());
 
         if (userAppraisal.getPositive()) {
             review.appraisePositivelyBy(user);

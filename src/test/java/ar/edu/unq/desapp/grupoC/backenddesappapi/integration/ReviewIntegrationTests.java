@@ -352,13 +352,11 @@ public class ReviewIntegrationTests {
         String token = ControllerTestFactory.getUserToken(mvc);
         review = new ReviewBuilder().build(title);
         Review savedReview = reviewRepository.save(review);
-        User savedUser = userRepository.save(new User());
 
-        String json = "{\"positive\": true, \"userId\": " + savedUser.getId() + "}";
+        String json = "{\"positive\": true}";
         mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(json)
                 .header("Authorization", "Bearer " + token))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.user.id", equalTo(savedUser.getId().intValue())))
         .andExpect(jsonPath("$.positive", is(true)));
     }
 
@@ -367,13 +365,11 @@ public class ReviewIntegrationTests {
         String token = ControllerTestFactory.getUserToken(mvc);
         review = new ReviewBuilder().build(title);
         Review savedReview = reviewRepository.save(review);
-        User savedUser = userRepository.save(new User());
 
-        String json = "{\"positive\": false, \"userId\": " + savedUser.getId() + "}";
+        String json = "{\"positive\": false}";
         mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(json)
                 .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user.id", equalTo(savedUser.getId().intValue())))
                 .andExpect(jsonPath("$.positive", is(false)));
     }
 
@@ -382,13 +378,12 @@ public class ReviewIntegrationTests {
         String token = ControllerTestFactory.getUserToken(mvc);
         review = new ReviewBuilder().build(title);
         Review savedReview = reviewRepository.save(review);
-        User savedUser = userRepository.save(new User());
 
-        String negativeJson = "{\"positive\": false, \"userId\": " + savedUser.getId() + "}";
+        String negativeJson = "{\"positive\": false}";
         mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(negativeJson)
                 .header("Authorization", "Bearer " + token));
 
-        String positiveJson = "{\"positive\": true, \"userId\": " + savedUser.getId() + "}";
+        String positiveJson = "{\"positive\": true}";
         mvc.perform(post("/review/" + savedReview.getId()).contentType(MediaType.APPLICATION_JSON).content(positiveJson)
                 .header("Authorization", "Bearer " + token));
 
