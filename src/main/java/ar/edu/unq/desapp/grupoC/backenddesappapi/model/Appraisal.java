@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupoC.backenddesappapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ public class Appraisal {
     private Boolean isPositive;
 
     @OneToOne
+    @JsonIgnoreProperties({"password", "token", "email"})
     private User user;
 
     public Appraisal() {}
